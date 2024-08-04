@@ -1,7 +1,15 @@
+using Microsoft.AspNetCore.Mvc;
+using ProyectoFE.DTOs;
+using ProyectoFE.RestApi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.Configure<ProyectoApiFE>(builder.Configuration.GetSection("ProyectoApi"));
+
+ builder.Services.AddSingleton<ApiRest>();
 
 var app = builder.Build();
 
