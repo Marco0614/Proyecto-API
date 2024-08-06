@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFE.DTOs;
 using ProyectoFE.RestApi;
+using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<ProyectoApiFE>(builder.Configuration.GetSection("ProyectoApi"));
 
- builder.Services.AddSingleton<ApiRest>();
+builder.Services.AddTransient<LoginDTO>();
+
+builder.Services.AddSingleton<ApiRest>();
 
 var app = builder.Build();
 
