@@ -12,28 +12,28 @@ namespace ProyectoFE.RestApi
     public class ApiRest
     {
         private readonly string _url;
-        private readonly LoginDTO _loginDTO;
-        
+       
         private string _token;
         private DateTime _tokenExpirationTime = DateTime.MinValue;
         private readonly object _tokenLock = new object();
 
-        public ApiRest(IOptions<ProyectoApiFE> options, LoginDTO login)
+        public ApiRest(IOptions<ProyectoApiFE> options)
         {
             _url = options.Value.ApiBaseUrl;
-            _loginDTO = login;
-            
+              
+
+           
         }
      
 
-        public async Task<bool> LoginAsync()
+        public async Task<bool> LoginAsync(string correo, string clave)
         {
             var cliente = new RestClient(_url);
             var request = new RestRequest("Acceso/Login", Method.Post);
             request.AddJsonBody(new LoginDTO
             {
-                Email = _loginDTO.Email,
-                Password = _loginDTO.Password
+                Email = correo,
+                Password = clave
             });
 
             var response = await cliente.ExecuteAsync<LoginDtoResponse>(request);
@@ -74,12 +74,7 @@ namespace ProyectoFE.RestApi
 
         private async Task<RestRequest> AddAuthentication(RestRequest request)
         {
-            //Asegurarse de que el token sea válido antes de añadirlo a la solicitud
-            if (_token == null || DateTime.UtcNow >= _tokenExpirationTime)
-            {
-                await LoginAsync();
-            }
-
+            
             if (_token != null)
             {
                 request.AddHeader("Authorization", $"Bearer {_token}");

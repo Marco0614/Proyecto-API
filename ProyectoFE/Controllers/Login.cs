@@ -7,12 +7,12 @@ namespace ProyectoFE.Controllers
     public class Login : Controller
     {
         private readonly ApiRest _apiRest;
-        private readonly LoginDTO _loginDTO;
+        
 
-        public Login(ApiRest apiRest, LoginDTO loginDTO)
+        public Login(ApiRest apiRest)
         {
             _apiRest = apiRest;
-            _loginDTO = loginDTO;
+            
         }
 
         public async Task<IActionResult> Index()
@@ -22,9 +22,8 @@ namespace ProyectoFE.Controllers
 
         public async Task<ActionResult> Loginasync(string correo, string clave)
         {
-            _loginDTO.Email = correo;
-            _loginDTO.Password = clave;
-            var logeo = await _apiRest.LoginAsync();
+            
+            var logeo = await _apiRest.LoginAsync(correo, clave);
             return View(logeo);
         }
 
